@@ -33,6 +33,24 @@ describe Card do
             expect(subject.balance).to eq 5
         end
 
+        it "in_journey? returns false when tap_out method is run" do
+            subject.tap_out
+            expect(subject.in_journey?).to eq false
+        end
+
+    end
+
+    describe "tap_in" do
+        it "in_journey? returns true when tap_in method is run" do
+            subject.instance_variable_set(:@balance, 10)
+            subject.tap_in
+            expect(subject.in_journey?).to eq true
+        end
+
+        it "raises error is balance is less than 1 on tap_in" do
+            subject.instance_variable_set(:@balance, 0)
+            expect{subject.tap_in}.to raise_error
+        end
     end
 
 end
