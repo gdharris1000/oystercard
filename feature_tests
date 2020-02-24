@@ -1,0 +1,9 @@
+require '~/projects/oyster/lib/card.rb'
+
+card = Card.new
+
+card.check_balance
+
+card.top_up(10)
+
+card.check_balance
