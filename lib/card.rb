@@ -1,14 +1,11 @@
 class Card
     attr_reader :balance
+    attr_accessor :status
 
     def initialize
         @balance = 0
         @fare = 5
         @status = false
-    end
-
-    def check_balance
-        @balance
     end
 
     def top_up(value)
@@ -18,8 +15,9 @@ class Card
         @balance += value
     end
 
+
     def tap_out
-        @balance -= @fare
+        deduct(@fare)
         @status = false
     end
 
@@ -40,6 +38,10 @@ class Card
 
     def over_limit?(value)
         @balance + value > 50
+    end
+    def deduct(value)
+      @balance-=value
+
     end
 
 

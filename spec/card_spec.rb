@@ -2,16 +2,6 @@ require 'card'
 
 describe Card do
 
-    it { is_expected.to respond_to :check_balance }
-    it { is_expected.to respond_to(:top_up).with(1).argument }
-
-    describe "check_balance" do
-        it "returns the card balance" do
-            subject.instance_variable_set(:@balance, 20)
-            expect(subject.check_balance).to eq 20
-        end
-    end
-
     describe "top_up" do
         it "adds money to the balance" do
             subject.instance_variable_set(:@balance, 0)
@@ -27,15 +17,14 @@ describe Card do
 
     describe "tap_out" do
         it "deducts fare from card balance" do
-            subject.instance_variable_set(:@fare, 5)
-            subject.instance_variable_set(:@balance, 10)
-            subject.tap_out
-            expect(subject.balance).to eq 5
-        end
+          subject.instance_variable_set(:@fare, 5)
+          subject.instance_variable_set(:@balance, 10)
+          expect{subject.tap_out}.to change{subject.balance}.by(-5)
+          end
 
         it "in_journey? returns false when tap_out method is run" do
-            subject.tap_out
-            expect(subject.in_journey?).to eq false
+            subject.instance_variable_set(:@status,true)
+            expect{subject.tap_out}.to change{subject.status}.from(true).to(false)
         end
 
     end
@@ -54,4 +43,3 @@ describe Card do
     end
 
 end
-
