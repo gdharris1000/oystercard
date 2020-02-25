@@ -1,5 +1,6 @@
 class Card
     attr_reader :balance
+    # just initializing
 
     def initialize
         @balance = 0
@@ -27,20 +28,20 @@ class Card
         fail "insufficient balance" if @balance < 1
         @status = true
     end
-    
+
     def in_journey?
         @status
     end
-    
-    
-    
-    
-    
+
+
+
+
+
     private
 
     def over_limit?(value)
         @balance + value > 50
     end
 
-   
+
 end
