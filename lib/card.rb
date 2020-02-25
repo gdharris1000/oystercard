@@ -1,48 +1,44 @@
+# frozen_string_literal: true
+
 class Card
-    attr_reader :balance
-    attr_accessor :status
+  attr_reader :balance
+  attr_accessor :status
+  MIN_BAL = 1
+  LIMIT = 90
 
-    def initialize
-        @balance = 0
-        @fare = 5
-        @status = false
-    end
+  def initialize
+    @balance = 0
+    @fare = 5
+    @status = false
+  end
 
-    def top_up(value)
+  def top_up(value)
+    raise 'balance too high' if over_limit?(value)
 
-        fail "balance too high" if over_limit?(value)
+    @balance += value
+  end
 
-        @balance += value
-    end
+  def tap_out
+    deduct(@fare)
+    @status = false
+  end
 
+  def tap_in
+    raise 'insufficient balance' if @balance < MIN_BAL
+    @status = true
+  end
 
-    def tap_out
-        deduct(@fare)
-        @status = false
-    end
+  def in_journey?
+    @status
+  end
 
-    def tap_in
-        fail "insufficient balance" if @balance < 1
-        @status = true
-    end
+  private
 
-    def in_journey?
-        @status
-    end
+  def over_limit?(value)
+    @balance + value > LIMIT
+  end
 
-
-
-
-
-    private
-
-    def over_limit?(value)
-        @balance + value > 50
-    end
-    def deduct(value)
-      @balance-=value
-
-    end
-
-
+  def deduct(value)
+    @balance -= value
+  end
 end

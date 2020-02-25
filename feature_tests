@@ -1,9 +1,13 @@
 require '~/projects/oyster/lib/card.rb'
 
+station = Station.new
+
 card = Card.new
 
 card.top_up(10)
 
-card.tap_in
+card.tap_in(station)
 
-card.tap_out
+card.tap_out(station)
+
+
