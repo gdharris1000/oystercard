@@ -1,6 +1,5 @@
 class Card
     attr_reader :balance
-    # just initializing
 
     def initialize
         @balance = 0
