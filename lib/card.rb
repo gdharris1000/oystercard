@@ -1,15 +1,17 @@
-# frozen_string_literal: true
+require_relative 'journey'
+require_relative 'station'
 
 class Card
-  attr_reader :balance
-  attr_accessor :status
+  attr_reader :balance, :entry_station, :history
+
   MIN_BAL = 1
   LIMIT = 90
 
   def initialize
     @balance = 0
-    @fare = 5
-    @status = false
+    @entry_station
+    @history = []
+    @journey
   end
 
   def top_up(value)
@@ -18,18 +20,25 @@ class Card
     @balance += value
   end
 
-  def tap_out
-    deduct(@fare)
-    @status = false
+  def tap_in(station)
+    fail 'insufficient balance' if @balance < MIN_BAL
+    
+    if in_journey? 
+      @journey = Journey.new(@entry_station, nil)
+      deduct(@journey.fare_calc)
+    end
+   
+    @entry_station = station
+    
   end
 
-  def tap_in
-    raise 'insufficient balance' if @balance < MIN_BAL
-    @status = true
+  def tap_out(station)
+    @journey = Journey.new(@entry_station, station)
+    deduct(@journey.fare_calc)
   end
-
+  
   def in_journey?
-    @status
+    @entry_station != nil
   end
 
   private
@@ -38,7 +47,13 @@ class Card
     @balance + value > LIMIT
   end
 
-  def deduct(value)
-    @balance -= value
+  def deduct(fare)
+    @balance -= fare
+    push_history
   end
+
+  def push_history
+    @history.push(@journey)
+  end
+
 end
