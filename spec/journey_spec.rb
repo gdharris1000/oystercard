@@ -22,20 +22,21 @@ describe Journey do
     end
 
     describe "fare_calc" do
+     
 
         it "returns min_fare when there is both an entry and exit station" do
-            
-            expect(journey.fare_calc).to eq Journey::MIN_FARE
+            journey.fare_calc
+            expect(journey.fare).to eq Journey::MIN_FARE
         end
 
         it "returns penalty when entry station is nil" do
-            
-            expect(journey_no_entrance.fare_calc).to eq Journey::PENALTY
+            journey_no_entrance.fare_calc
+            expect(journey_no_entrance.fare).to eq Journey::PENALTY
         end
 
         it "returns penalty when exit station is nil" do
-            
-            expect(journey_no_exit.fare_calc).to eq Journey::PENALTY
+            journey_no_exit.fare_calc
+            expect(journey_no_exit.fare).to eq Journey::PENALTY
         end
 
     end

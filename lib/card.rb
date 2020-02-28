@@ -1,5 +1,6 @@
 require_relative 'journey'
 require_relative 'station'
+require_relative 'journey_log'
 
 class Card
   attr_reader :balance, :entry_station, :history
@@ -10,31 +11,33 @@ class Card
   def initialize
     @balance = 0
     @entry_station
-    @history = []
+    @journey_log = JourneyLog.new
     @journey
   end
 
   def top_up(value)
     raise 'balance too high' if over_limit?(value)
-
     @balance += value
   end
 
   def tap_in(station)
     fail 'insufficient balance' if @balance < MIN_BAL
     
-    if in_journey? 
-      @journey = Journey.new(@entry_station, nil)
-      deduct(@journey.fare_calc)
+    @journey_log.start(station)
+
+    if in_journey?
+      deduct(@journey_log.journey.fare_calc)
     end
-   
-    @entry_station = station
     
+      @entry_station = station
+
   end
 
   def tap_out(station)
-    @journey = Journey.new(@entry_station, station)
-    deduct(@journey.fare_calc)
+    @journey_log.finish(station)
+    deduct(@journey_log.history[-1].fare_calc)
+    # @journey = Journey.new(@entry_station, station)
+    # deduct(@journey.fare_calc)
   end
   
   def in_journey?
@@ -49,11 +52,11 @@ class Card
 
   def deduct(fare)
     @balance -= fare
-    push_history
+    # push_history
   end
 
-  def push_history
-    @history.push(@journey)
-  end
+  # def push_history
+  #   @history.push(@journey)
+  # end
 
 end
