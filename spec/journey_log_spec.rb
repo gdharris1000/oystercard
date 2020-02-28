@@ -23,12 +23,17 @@ describe JourneyLog do
             subject.instance_variable_set(:@entry_station, nil)
             subject.start(entry_station)
             expect(subject.instance_variable_get(:@entry_station)).to eq entry_station
-          end
-
-        it 'checks if the journey is already in progress' do
-            subject.instance_variable_set(:@entry_station, entry_station)
-            expect{subject.start(entry_station)}.to raise_error "journey already in progress"
         end
+        
+        it 'creates a new journey instance' do
+            subject.start(entry_station)
+            expect(subject.journey.entry_station).to eq entry_station    
+        end
+
+        # it 'checks if the journey is already in progress' do
+        #     subject.instance_variable_set(:@entry_station, entry_station)
+        #     expect{subject.start(entry_station)}.to raise_error "journey already in progress"
+        # end
 
     end
 
@@ -43,7 +48,7 @@ describe JourneyLog do
             expect(subject.history).to include subject.instance_variable_get(:@journey)
         end
 
-
     end
+
 end
 

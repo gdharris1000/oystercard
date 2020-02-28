@@ -3,7 +3,7 @@ require_relative 'station'
 require_relative 'journey_log'
 
 class Card
-  attr_reader :balance, :entry_station, :history
+  attr_reader :balance, :entry_station, :journey_log
 
   MIN_BAL = 1
   LIMIT = 90
@@ -36,8 +36,6 @@ class Card
   def tap_out(station)
     @journey_log.finish(station)
     deduct(@journey_log.history[-1].fare_calc)
-    # @journey = Journey.new(@entry_station, station)
-    # deduct(@journey.fare_calc)
   end
   
   def in_journey?
